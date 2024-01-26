@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
-import { CommentLogo, NotificationsLogo, UnlikeLogo } from "../assets/constants";
+import { CommentLogo, NotificationsLogo, UnlikeLogo } from "../../assets/constants";
 
 function PostFooter({ username, isProfilePage }) {
     const [liked, setLiked] = useState(false);

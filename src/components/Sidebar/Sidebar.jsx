@@ -9,7 +9,7 @@ import {
     SearchLogo,
     NotificationsLogo,
     CreatePostLogo
-} from '../assets/constants';
+} from '../../assets/constants';
 
 function Sidebar() {
     const sidebarItems = [

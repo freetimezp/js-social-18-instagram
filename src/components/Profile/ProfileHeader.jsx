@@ -1,6 +1,5 @@
 import { Avatar, AvatarGroup, Button, Flex, Text, VStack } from "@chakra-ui/react";
 
-
 function ProfileHeader() {
     return (
         <Flex gap={{ base: 4, sm: 10 }} py={10} direction={{ base: "column", sm: "row" }}>

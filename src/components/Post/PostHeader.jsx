@@ -1,5 +1,4 @@
-import { Avatar, Box, Flex, Text } from "@chakra-ui/react"
-
+import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 
 function PostHeader({ username, avatar }) {
     return (

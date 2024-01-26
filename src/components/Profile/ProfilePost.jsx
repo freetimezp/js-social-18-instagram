@@ -18,8 +18,8 @@ import { AiFillHeart } from "react-icons/ai";
 import { FaComment } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-import Comment from "./Comment";
-import PostFooter from "./PostFooter";
+import Comment from "../Comment/Comment";
+import PostFooter from "../Post/PostFooter";
 
 function ProfilePost({ img }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
