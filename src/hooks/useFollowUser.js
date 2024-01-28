@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 
 import useAuthStore from "../store/authStore";
-import useUserProfileStore from "../store/userProfileStore";
+//import useUserProfileStore from "../store/userProfileStore";
 import useShowToast from "./useShowToast";
-import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 const useFollowUser = (userId) => {
     const [isUpdating, setIsUpdating] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
-    const { user: authUser, setUser: setAuthUser } = useAuthStore();
-    const { userProfile, setUserProfile } = useUserProfileStore();
+    const authUser = useAuthStore(state => state.user);
+    const setAuthUser = useAuthStore(state => state.setUser);
+    //const { userProfile, setUserProfile } = useUserProfileStore();
 
     const showToast = useShowToast();
+
+    //console.log(userProfile);
 
     const handleFollowUser = async () => {
         setIsUpdating(true);
@@ -34,10 +37,10 @@ const useFollowUser = (userId) => {
                     ...authUser,
                     following: authUser.following.filter(uid => uid !== userId)
                 });
-                setUserProfile({
-                    ...userProfile,
-                    followers: userProfile.followers.filter(uid => uid !== authUser.uid)
-                })
+                // setUserProfile({
+                //     ...userProfile,
+                //     followers: userProfile.followers.filter(uid => uid !== authUser.uid)
+                // })
 
                 //save info in localstorage
                 localStorage.setItem("user-info", JSON.stringify({
@@ -52,10 +55,10 @@ const useFollowUser = (userId) => {
                     ...authUser,
                     following: [...authUser.following, userId]
                 });
-                setUserProfile({
-                    ...userProfile,
-                    followers: [...userProfile.followers, authUser.uid]
-                });
+                // setUserProfile({
+                //     ...userProfile,
+                //     followers: [...userProfile.followers, authUser.uid]
+                // });
 
                 //save info in localstorage
                 localStorage.setItem("user-info", JSON.stringify({
@@ -67,6 +70,7 @@ const useFollowUser = (userId) => {
             }
         } catch (error) {
             showToast("Error", error.message, "error");
+            //console.log(error);
         } finally {
             setIsUpdating(false);
         }

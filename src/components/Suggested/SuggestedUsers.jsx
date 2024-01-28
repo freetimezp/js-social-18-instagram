@@ -1,7 +1,7 @@
 import { Text, Flex, VStack, Box, Link } from "@chakra-ui/react";
 
 import SuggestedHeader from "./SuggestedHeader";
-import SuggestedUser from "./SuggestedUser";
+//import SuggestedUser from "./SuggestedUser";
 
 function SuggestedUsers() {
     return (
@@ -18,9 +18,9 @@ function SuggestedUsers() {
                 </Text>
             </Flex>
 
-            <SuggestedUser name="Dan Abramov" followers={1392} avatar="https://bit.ly/dan-abramov" />
+            {/* <SuggestedUser name="Dan Abramov" followers={1392} avatar="https://bit.ly/dan-abramov" />
             <SuggestedUser name="Ryan Florence" followers={348} avatar="https://bit.ly/ryan-florence" />
-            <SuggestedUser name="Christian Nwamba" followers={597} avatar="https://bit.ly/code-beast" />
+            <SuggestedUser name="Christian Nwamba" followers={597} avatar="https://bit.ly/code-beast" /> */}
 
             <Box fontSize={12} color={"gray.500"} mt={5} alignSelf={"start"}>
                 &copy; 2024 Build by{" "}
