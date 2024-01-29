@@ -22,12 +22,48 @@ import Comment from "../Comment/Comment";
 import PostFooter from "../Post/PostFooter";
 import useUserProfileStore from "../../store/userProfileStore";
 import useAuthStore from "../../store/authStore";
+import useShowToast from "../../hooks/useShowToast";
+import { useState } from "react";
+import { deleteObject, ref } from "firebase/storage";
+import { firestore, storage } from "../../firebase/firebase";
+import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import usePostStore from "../../store/postStore";
 
 function ProfilePost({ post }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const userProfile = useUserProfileStore(state => state.userProfile);
     const authUser = useAuthStore(state => state.user);
+    const deletePost = usePostStore(state => state.deletePost);
+    const decrementPostCount = useUserProfileStore(state => state.deletePost);
+
+    const showToast = useShowToast();
+
+    const handleDeletePost = async () => {
+        if (!window.confirm("Are you sure you want to delete this post?")) return;
+        if (isDeleting) return;
+
+        try {
+            const imageRef = ref(storage, `posts/${post.id}`);
+            await deleteObject(imageRef);
+
+            const userRef = doc(firestore, "users", authUser.uid);
+            await deleteDoc(doc(firestore, "posts", post.id));
+
+            await updateDoc(userRef, {
+                posts: arrayRemove(post.id)
+            });
+
+            deletePost(post.id);
+            decrementPostCount(post.id);
+            showToast("Success", "Post deleted successfully.", "success");
+        } catch (error) {
+            showToast("Error", error.message, "error");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     return (
         <>
@@ -124,6 +160,8 @@ function ProfilePost({ post }) {
                                             borderRadius={4}
                                             p={1}
                                             size={"sm"}
+                                            onClick={handleDeletePost}
+                                            isLoading={isDeleting}
                                         >
                                             <MdDelete size={20} cursor={"pointer"} />
                                         </Button>
