@@ -1,6 +1,6 @@
 import {
     Avatar,
-    Box,
+    Button,
     Divider,
     Flex,
     GridItem,
@@ -20,9 +20,14 @@ import { MdDelete } from "react-icons/md";
 
 import Comment from "../Comment/Comment";
 import PostFooter from "../Post/PostFooter";
+import useUserProfileStore from "../../store/userProfileStore";
+import useAuthStore from "../../store/authStore";
 
-function ProfilePost({ img }) {
+function ProfilePost({ post }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const userProfile = useUserProfileStore(state => state.userProfile);
+    const authUser = useAuthStore(state => state.user);
 
     return (
         <>
@@ -49,18 +54,22 @@ function ProfilePost({ img }) {
                     <Flex alignItems={"center"} justifyContent={"center"} gap={50}>
                         <Flex>
                             <AiFillHeart size={20} />
-                            <Text fontWeight={"bold"} ml={2}>7</Text>
+                            <Text fontWeight={"bold"} ml={2}>
+                                {post.likes.length}
+                            </Text>
                         </Flex>
 
                         <Flex>
                             <FaComment size={20} />
-                            <Text fontWeight={"bold"} ml={2}>15</Text>
+                            <Text fontWeight={"bold"} ml={2}>
+                                {post.comments.length}
+                            </Text>
                         </Flex>
                     </Flex>
                 </Flex>
 
                 <Image
-                    src={img} alt="profile post"
+                    src={post.imageURL} alt="profile post"
                     w={"100%"} h={"100%"}
                     objectFit={"cover"}
                 />
@@ -80,16 +89,20 @@ function ProfilePost({ img }) {
                             gap={4}
                             mx={"auto"}
                             w={{ base: "90%", sm: "70%", md: "full" }}
+                            maxH={"90vh"}
+                            minH={"50vh"}
                         >
-                            <Box
+                            <Flex
                                 borderRadius={4}
                                 overflow={"hidden"}
                                 border={"1px solid"}
                                 borderColor={"whiteAlpha.300"}
                                 flex={1.5}
+                                justifyContent={"center"}
+                                alignItems={"center"}
                             >
-                                <Image src={img} alt="post" />
-                            </Box>
+                                <Image src={post.imageURL} alt="post" />
+                            </Flex>
                             <Flex
                                 flex={1}
                                 flexDirection={"column"}
@@ -98,17 +111,23 @@ function ProfilePost({ img }) {
                             >
                                 <Flex alignItems={"center"} justifyContent={"space-between"}>
                                     <Flex alignItems={"center"} gap={4}>
-                                        <Avatar src="/profilepic.png" size={"sm"} name="Freetime" />
-                                        <Text fontWeight={"bold"} fontSize={12}>Freetime</Text>
+                                        <Avatar src={userProfile.profilePicURL} size={"sm"} name="Freetime" />
+                                        <Text fontWeight={"bold"} fontSize={12}>
+                                            {userProfile.fullname}
+                                        </Text>
                                     </Flex>
 
-                                    <Box
-                                        _hover={{ bg: "whiteAlpha.300", color: "red.600" }}
-                                        borderRadius={4}
-                                        p={1}
-                                    >
-                                        <MdDelete size={20} cursor={"pointer"} />
-                                    </Box>
+                                    {authUser?.uid === userProfile.uid && (
+                                        <Button
+                                            bg={"transparent"}
+                                            _hover={{ bg: "whiteAlpha.300", color: "red.600" }}
+                                            borderRadius={4}
+                                            p={1}
+                                            size={"sm"}
+                                        >
+                                            <MdDelete size={20} cursor={"pointer"} />
+                                        </Button>
+                                    )}
                                 </Flex>
 
                                 <Divider my={4} bg={"gray.500"} />
