@@ -5,7 +5,9 @@ import usePostComment from "../../hooks/usePostComment";
 import useAuthStore from "../../store/authStore";
 import useLikePost from "../../hooks/useLikePost";
 
-function PostFooter({ post, username, isProfilePage }) {
+import { timeAgo } from '../../utils/timeAgo';
+
+function PostFooter({ post, isProfilePage, creatorProfile }) {
     const authUser = useAuthStore(state => state.user);
 
     const { isCommenting, handlePostComment } = usePostComment();
@@ -39,18 +41,26 @@ function PostFooter({ post, username, isProfilePage }) {
                 {likes} likes
             </Text>
 
+            {isProfilePage && (
+                <Text fontSize={12} color={"gray.400"}>
+                    Posted {timeAgo(post.createdAt)}
+                </Text>
+            )}
+
             {!isProfilePage && (
                 <>
                     <Text fontSize={"sm"} fontWeight={700}>
-                        {username}{" "}
+                        {creatorProfile?.username}{" "}
                         <Text as="span" fontWeight={400}>
-                            Have a nice day..
+                            {post.caption}
                         </Text>
                     </Text>
 
-                    <Text fontSize={"sm"} color={"gray"}>
-                        View all 1,000 comments
-                    </Text>
+                    {post.comments.length > 0 && (
+                        <Text fontSize={"sm"} color={"gray"} cursor={"pointer"}>
+                            View all {post.comments.length} comments
+                        </Text>
+                    )}
                 </>
             )}
 
