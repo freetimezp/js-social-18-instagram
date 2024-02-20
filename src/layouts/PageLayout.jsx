@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import Sidebar from "../components/Sidebar/Sidebar";
-import Navbar from "../components/Navbar/navbar";
+import Navbar from "../components/Navbar/Navbar";
 import { auth } from "../firebase/firebase";
 
 function PageLayout({ children }) {
